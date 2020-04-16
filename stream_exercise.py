@@ -44,10 +44,27 @@ class StreamProcessor(object):
 
     def __init__(self, stream):
         self._stream = stream
+        self._target = 200
+        self._limit = 10
 
     def process(self):
         """
-        TODO: Implement the `process` method, as described above.
+        This method:
+
+            1. Reads two digits at a time from the beginning of the stream
+            2. Converts the two digits into a number, and adds that number
+               to a running total.
+            3. Once this number reaches 200 or more, the method returns how
+               many two digit numbers it had to add together to reach its
+               total.
+            4. If `process` reaches the end of the stream BEFORE it has
+               reached a sum of 200, then it will return how many two
+               digit numbers it found before reaching the end of the
+               stream.
+            5. The method will add AT MOST 10 of these two digit numbers
+               together: if it reaches the 10th two digit number and the
+               sum has not yet reached 200, then the method will stop and
+               return 10.
         
         :return: int
         """
@@ -56,12 +73,19 @@ class StreamProcessor(object):
                    # together.
         total = 0  # The running total of sums.
 
-        # TODO: WRITE CODE HERE:
-
         # Just some example syntax, you can read two digits from the head of the
         # stream using the following code:
         #
         # digits = self._stream.read(2)
 
+        while total < self._target and count < self._limit:
+            digits = self._stream.read(2)
+
+            # Check for end of stream
+            if len(digits) < 2:
+                break
+
+            total += int(digits)
+            count += 1
 
         return count
